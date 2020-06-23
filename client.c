@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <curl/curl.h>
+#include <unistd.h>
 
 int main() {
     // printf() displays the string inside quotation
@@ -26,14 +27,19 @@ int main() {
     curl_easy_setopt(curl, CURLOPT_POST, 1L);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 3000L);
 
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, msg1);
-    res = curl_easy_perform(curl);
-    result = res == CURLE_OK;
-    if ( !result )
-    {
-        printf("discovery report to server failed");
+    for(;;) {
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, msg1);
+        res = curl_easy_perform(curl);
+        result = res == CURLE_OK;
+        if ( !result )
+        {
+            printf("discovery report to server failed");
+        }
+        sleep(1);
     }
+    
 
+    /*
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, msg2);
     res = curl_easy_perform(curl);
     result = res == CURLE_OK;
@@ -41,6 +47,7 @@ int main() {
     {
         printf("discovery report to server failed");
     }
+    */
 
     return 0;
 }
